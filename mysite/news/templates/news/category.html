@@ -1,0 +1,74 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+
+  <title>{{category.title}}</title>
+</head>
+<body>
+<ul class="nav justify-content-end">
+  <li class="nav-item">
+    <a class="nav-link active" aria-current="page" href="{% url 'home' %}">Home Page</a>
+  </li>
+  <li class="nav-item">
+    <a class="nav-link active" aria-current="page" href="{% url 'home' %}">Edd News</a>
+  </li>
+  <li class="nav-item">
+    <a class="nav-link active" aria-current="page" href="{% url 'home' %}">Admin Page</a>
+  </li>
+</ul>
+
+<div class="container mt-3">
+  <div class="row">
+    <div class="col-3">
+      <ul class="list-group">
+        {% for category in categories %}
+        <li class="list-group-item d-flex justify-content-between align-items-center">
+          <a href="{% url 'category' category.pk %}" role="tab" aria-controls="list-home">{{category.title}}</a>
+          <span class="badge bg-primary rounded-pill">{{category.number_news}}</span>
+        </li>
+        {% empty%}
+        <h5>Category not found!</h5>
+        {% endfor%}
+      </ul>
+    </div>
+    <div class="col-9">
+      {% for item in news %}
+      <div class="card mb-4" >
+        <div class="card-header"><b class="text-primary">Category:  {{item.category}}</b></div>
+        <div class="card-body">
+          <div class="d-flex justify-content-between align-items-center  mb-4">
+            <div class="me-4">
+              {% if item.photo%}
+              <img src="{{ item.photo.url }}" class="img-thumbnail" alt="..." width="350px">
+              {% else %}
+              <img src="images/IMG_20160120_133849.jpg" class="img-thumbnail" alt="..." width="350px">
+              {% endif%}
+            </div>
+            <div>
+              <h6 class="card-title">{{item.title}}</h6>
+              <p class="card-text">{{item.content|truncatewords:60}}</p>
+            </div>
+          </div>
+          <div class="d-flex justify-content-between align-items-center">
+            <a href="/" class="btn btn-primary">Read more...</a>
+            <div class="text-end">Publication {{item.createdAt|timesince}} ago</div>
+          </div>
+        </div>
+      </div>
+      {% empty%}
+      <h5>News not found!</h5>
+      {% endfor%}
+    </div>
+
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
+
+
+</body>
+</html>
